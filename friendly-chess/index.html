@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Friendly Chess</title>
+<meta name="description" content="Free 1v1 chess. Share a link and play a friend. No accounts, no ads.">
+<link rel="stylesheet" href="style.css">
+<script>
+  // If the primary CDN is blocked, fall back to a second one.
+  function loadPeerFallback() {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';
+    document.head.appendChild(s);
+  }
+</script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js" onerror="loadPeerFallback()"></script>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1><span class="logo">♞</span> Friendly Chess</h1>
+    <button id="muteBtn" class="ghost" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+  </header>
+
+  <!-- ============ MENU ============ -->
+  <main id="menu">
+    <p class="lead">Free 1v1 chess. Create a game, send your friend the link, play. No accounts, no ads.</p>
+
+    <div class="cards">
+      <section class="card">
+        <h2>Play a friend online</h2>
+        <p class="muted">You'll get a link to send them.</p>
+        <fieldset class="chips" id="colorChoice">
+          <legend>I want to play as</legend>
+          <label><input type="radio" name="color" value="random" checked><span>Random</span></label>
+          <label><input type="radio" name="color" value="w"><span>White</span></label>
+          <label><input type="radio" name="color" value="b"><span>Black</span></label>
+        </fieldset>
+        <button id="createBtn" class="primary">Create game</button>
+      </section>
+
+      <section class="card">
+        <h2>Join a game</h2>
+        <p class="muted">Got a link? Just open it. Or paste the link or code here.</p>
+        <form id="joinForm" class="row">
+          <input id="joinInput" placeholder="Link or game code" autocomplete="off" autocapitalize="off" spellcheck="false">
+          <button class="primary" type="submit">Join</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Same screen</h2>
+        <p class="muted">Pass-and-play on this device.</p>
+        <button id="localBtn">Play locally</button>
+      </section>
+
+      <section class="card" id="resumeCard" hidden>
+        <h2>Resume your last game</h2>
+        <p class="muted" id="resumeInfo"></p>
+        <button id="resumeBtn" class="primary">Resume</button>
+        <button id="discardBtn" class="ghost">Discard</button>
+      </section>
+    </div>
+    <p class="fine">Moves go straight between your browsers (peer-to-peer). Nothing is stored on a server.</p>
+  </main>
+
+  <!-- ============ GAME ============ -->
+  <main id="game" hidden>
+    <div class="gamegrid">
+      <div class="boardcol" id="boardcol">
+        <div class="pbar" id="topbar"></div>
+        <div class="board" id="board" role="grid" aria-label="Chess board"></div>
+        <div class="pbar" id="botbar"></div>
+      </div>
+
+      <aside class="side">
+        <div class="card" id="invite" hidden>
+          <h2>Invite your friend</h2>
+          <p class="muted">Send them this link. The game starts when they open it. Keep this tab open.</p>
+          <div class="row">
+            <input id="inviteLink" readonly>
+            <button id="copyBtn" class="primary">Copy</button>
+          </div>
+          <button id="shareBtn" class="ghost" hidden>Share…</button>
+          <p class="fine" id="fileWarn" hidden>⚠ You opened this as a local file. Your friend can't reach a link to your computer. Put the site online first (see README).</p>
+        </div>
+
+        <div class="status" id="status" aria-live="polite"></div>
+
+        <div class="notice" id="notice" hidden></div>
+
+        <div class="card result" id="resultCard" hidden></div>
+
+        <div class="card movescard">
+          <div class="moves" id="moves"></div>
+        </div>
+
+        <div class="btns" id="controls">
+          <button id="drawBtn">Offer draw</button>
+          <button id="resignBtn">Resign</button>
+          <button id="undoBtn">Undo</button>
+          <button id="flipBtn">Flip board</button>
+          <button id="leaveBtn" class="ghost">Leave</button>
+        </div>
+
+        <div class="card chat" id="chat">
+          <div class="chatlog" id="chatlog"></div>
+          <form id="chatForm" class="row">
+            <input id="chatInput" placeholder="Say something…" maxlength="300" autocomplete="off">
+            <button>Send</button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<div id="promo" class="overlay" hidden>
+  <div class="promobox" id="promoBox"></div>
+</div>
+<div id="toast" role="status"></div>
+
+<script src="chess.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
